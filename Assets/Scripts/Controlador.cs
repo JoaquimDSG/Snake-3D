@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Controlador : MonoBehaviour
 {
@@ -8,15 +9,22 @@ public class Controlador : MonoBehaviour
     float VelDob = 180;
     float VelCuerpo = 5;
     int Brecha = 10;
+    int puntos = 0;
 
     public GameObject MyCube;
+    public GameObject Manzana;
 
     private List<GameObject> ParteCuerpo = new List<GameObject>();
     private List<Vector3> HPosicion = new List<Vector3>();
 
     void Start()
     {
-        Crecer();
+        for (int i = 0; i < 5; i++)
+        {
+            Crecer();
+        }
+
+        SpawnManzana();
 
     }
 
@@ -47,5 +55,46 @@ public class Controlador : MonoBehaviour
         GameObject Cuerpo = Instantiate(MyCube);
         ParteCuerpo.Add(Cuerpo);
     }
-}
+
+    private void OnTriggerEnter(Collider col)
+    {
+        if (col.gameObject.tag == "Manzana")
+        {
+            Crecer();
+            SpawnManzana();
+            puntos++;
+        }
+
+        else if (col.gameObject.tag == "Pared")
+        {
+            GameOver();
+        }
+
+
+        if (puntos == 42)
+        {
+            GG();
+        }
+    }
+
+    public void GG()
+    {
+        SceneManager.LoadScene("Victoria");
+    }
+
+
+    public void GameOver()
+    {
+        SceneManager.LoadScene("PGameOver");
+    }
+
+    public void SpawnManzana()
+    {
+        Vector3 randomSpawnPosition = new Vector3(Random.Range(-11, 11), 0.5f, Random.Range(-11, 11));
+
+        var nuevaManzana = Instantiate(Manzana, randomSpawnPosition, Quaternion.identity);
+        Destroy(Manzana);
+        Manzana = nuevaManzana;
+    }
+} 
 
