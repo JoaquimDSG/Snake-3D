@@ -17,17 +17,14 @@ public class Controlador : MonoBehaviour
     void Start()
     {
         Crecer();
-        Crecer();
-        Crecer();
-        Crecer();
-        Crecer();
+
     }
 
     void Update()
     {
         transform.position += transform.forward * VelMov * Time.deltaTime;
 
-        float steerDirection = Input.GetAxis("Horizontal"); 
+        float steerDirection = Input.GetAxis("Horizontal");
         transform.Rotate(Vector3.up * steerDirection * VelDob * Time.deltaTime);
 
         HPosicion.Insert(0, transform.position);
@@ -51,3 +48,4 @@ public class Controlador : MonoBehaviour
         ParteCuerpo.Add(Cuerpo);
     }
 }
+
